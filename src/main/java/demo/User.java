@@ -90,5 +90,4 @@ public class User {
         return unencryptedPassword == passwordToCheck;
     }
 
-    
 }

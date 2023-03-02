@@ -39,10 +39,19 @@ public class UserService {
     }
 
     public boolean addUser(User user) {
-        if (userRepository.contains(user.getEmail()))
-            return false;
+        boolean alreadyExists = false;
+
+        for (User loopUser : userRepository)
+            if (loopUser.getEmail() == user.getEmail())
+                alreadyExists = true;
+
+        if (alreadyExists == false){ userRepository.add(user);
+            return true;}
+           
         else
-            return userRepository.add(user);
+            return false;
+
+            
     }
 
 }
