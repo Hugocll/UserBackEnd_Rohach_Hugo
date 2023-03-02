@@ -136,100 +136,100 @@ class UserTest {
         assertEquals(1999, firstMembershipYear);
     }
     
-    // //getFirstmembershipYear
-    // //unhappy case
-    // //TIP: go to the Java API to the ArrayList class and search for some methods that you can use
-    // //no membership years
-    // @Test
-    // void givenUserWithNoMemberschipYears_whenAskForFirstMembershipYear_then0IsReturned(){
-    //     //given
-    //     User elke = new User(validNameElke, validAgeElke, validEmailElke, validPasswordElke);
+    //getFirstmembershipYear
+    //unhappy case
+    //TIP: go to the Java API to the ArrayList class and search for some methods that you can use
+    //no membership years
+    @Test
+    void givenUserWithNoMemberschipYears_whenAskForFirstMembershipYear_then0IsReturned(){
+        //given
+        User elke = new User(validNameElke, validAgeElke, validEmailElke, validPasswordElke);
     
-    //     //when
-    //     int firstMembershipYear = elke.getFirstMembershipYear();
+        //when
+        int firstMembershipYear = elke.getFirstMembershipYear();
     
-    //     //then
-    //     assertEquals(0, firstMembershipYear);
-    // }
+        //then
+        assertEquals(0, firstMembershipYear);
+    }
 
-    // //toString
-    // //happy case
-    // @Test
-    // void givenValidUser_whenToString_thenUserObjectisReturnedInStringRepresentation() {
-    //     //given
-    //     User elke = new User(validNameElke, validAgeElke, validEmailElke, validPasswordElke);
+    //toString
+    //happy case
+    @Test
+    void givenValidUser_whenToString_thenUserObjectisReturnedInStringRepresentation() {
+        //given
+        User elke = new User(validNameElke, validAgeElke, validEmailElke, validPasswordElke);
 
-    //     //when
-    //     String result = elke.toString();
+        //when
+        String result = elke.toString();
 
-    //     //then
-    //     assertEquals("Elke is 44 years old and has as email elke.steegmans@ucll.be", result);
-    // }
+        //then
+        assertEquals("Elke is 44 years old and has as email elke.steegmans@ucll.be", result);
+    }
 
-    // //getNumberOfMembershipYearsIn2000
-    // //happy case
-    // @Test
-    // void givenUserWithMemberschipYearsIn2000_whenAskForNumberOfMembershipYearsIn2000_thenCorrectNumberIsReturned(){
-    //     //given
-    //     User elke = new User(validNameElke, validAgeElke, validEmailElke, validPasswordElke);
-    //     elke.addMembershipYear(2003);
-    //     elke.addMembershipYear(1999);
-    //     elke.addMembershipYear(2000);
-    //     elke.addMembershipYear(1978);
-    //     elke.addMembershipYear(2023);
+    //getNumberOfMembershipYearsIn2000
+    //happy case
+    @Test
+    void givenUserWithMemberschipYearsIn2000_whenAskForNumberOfMembershipYearsIn2000_thenCorrectNumberIsReturned(){
+        //given
+        User elke = new User(validNameElke, validAgeElke, validEmailElke, validPasswordElke);
+        elke.addMembershipYear(2003);
+        elke.addMembershipYear(1999);
+        elke.addMembershipYear(2000);
+        elke.addMembershipYear(1978);
+        elke.addMembershipYear(2023);
         
-    //     //when
-    //     int numberOfMembershipIn2000 = elke.getNumberOfMembershipYearsIn2000();
+        //when
+        int numberOfMembershipIn2000 = elke.getNumberOfMembershipYearsIn2000();
     
-    //     //then
-    //     assertEquals(3, numberOfMembershipIn2000);
-    // }
+        //then
+        assertEquals(3, numberOfMembershipIn2000);
+    }
 
 
-    // //getNumberOfMembershipYearsIn2000
-    // //unhappy case
-    // @Test
-    // void givenUserWithNoMemberschipYearsIn2000_whenAskForNumberOfMembershipYearsIn2000_then0IsReturned(){
-    //     //given
-    //     User elke = new User(validNameElke, validAgeElke, validEmailElke, validPasswordElke);
-    //     elke.addMembershipYear(1980);
-    //     elke.addMembershipYear(1999);
-    //     elke.addMembershipYear(1978);
-    //     elke.addMembershipYear(3000);
+    //getNumberOfMembershipYearsIn2000
+    //unhappy case
+    @Test
+    void givenUserWithNoMemberschipYearsIn2000_whenAskForNumberOfMembershipYearsIn2000_then0IsReturned(){
+        //given
+        User elke = new User(validNameElke, validAgeElke, validEmailElke, validPasswordElke);
+        elke.addMembershipYear(1980);
+        elke.addMembershipYear(1999);
+        elke.addMembershipYear(1978);
+        elke.addMembershipYear(3000);
         
-    //     //when
-    //     int numberOfMembershipIn2000 = elke.getNumberOfMembershipYearsIn2000();
+        //when
+        int numberOfMembershipIn2000 = elke.getNumberOfMembershipYearsIn2000();
     
-    //     //then
-    //     assertEquals(0, numberOfMembershipIn2000);
-    // }
+        //then
+        assertEquals(0, numberOfMembershipIn2000);
+    }
 
-    // //isPasswordCorrect
-    // //happy case
-    // // @Test
-    // void givenValidUser_whenCheckingPasswordWithCorrectPassword_thenTrueIsReturned (){
-    //     //given
-    //     User elke = new User(validNameElke, validAgeElke, validEmailElke, validPasswordElke);
+    //isPasswordCorrect
+    //happy case
+    @Test
+    void givenValidUser_whenCheckingPasswordWithCorrectPassword_thenTrueIsReturned (){
+        //given
+        User elke = new User(validNameElke, validAgeElke, validEmailElke, validPasswordElke);
 
-    //     //when
-    //     boolean correctPassword = elke.isPasswordCorrect("ikgahetnietvertellenhoor");
+        //when
+        boolean correctPassword = elke.isPasswordCorrect("ikgahetnietvertellenhoor");
 
-    //     //then
-    //     assertTrue(correctPassword);
-    // }
+        //then
+        assertTrue(correctPassword);
+    }
 
-    // //isPasswordCorrect
-    // //unhappy case
-    // @Test
-    // void givenValidUser_whenCheckingPasswordWithIncorrectPassword_thenFalseIsReturned (){
-    //     //given
-    //     User elke = new User(validNameElke, validAgeElke, validEmailElke, validPasswordElke);
+    //isPasswordCorrect
+    //unhappy case
+    @Test
+    void givenValidUser_whenCheckingPasswordWithIncorrectPassword_thenFalseIsReturned (){
+        //given
+        User elke = new User(validNameElke, validAgeElke, validEmailElke, validPasswordElke);
     
-    //     //when
-    //     boolean correctPassword = elke.isPasswordCorrect("rararaaikgahet");
+        //when
+        boolean correctPassword = elke.isPasswordCorrect("rararaaikgahet");
     
-    //     //then
-    //     assertFalse(correctPassword);
-    // }
+        //then
+        assertFalse(correctPassword);
+    }
 
 }

@@ -1,7 +1,7 @@
 package demo;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Year;
+import java.util.*;
 
 public class User {
 
@@ -10,6 +10,7 @@ public class User {
     private List<Integer> membershipYears = new ArrayList<Integer>();
     private String email;
     private String password;
+    private String unencryptedPassword;
 
     public User(String name, int age, String email, String password) {
         this.name = name;
@@ -21,6 +22,9 @@ public class User {
             this.email = email;
         else 
             this.email = null;
+
+        this.unencryptedPassword = password;
+
         if (password.replaceAll("\\s","").length() != 0)
             this.password = "@$-"+password+"&%#";
         else 
@@ -61,7 +65,29 @@ public class User {
     }
 
     public int getFirstMembershipYear() {
-        return membershipYears
+        if (membershipYears.size() == 0)
+            return 0;
+        else
+            return Collections.min(membershipYears);
+    }
+
+    public String toString() {
+        String s = String.format("%s is %s years old and has as email %s",name,age,email);
+        return s;
+    }
+
+    public int getNumberOfMembershipYearsIn2000(){
+        int currentYear = Year.now().getValue();
+        int count = 0;
+        for (int years : membershipYears){
+            if (years >= 2000 && years <= currentYear)
+                count ++;
+        }
+        return count;
+    }
+
+    public boolean isPasswordCorrect(String passwordToCheck){
+        return unencryptedPassword == passwordToCheck;
     }
 
 }
