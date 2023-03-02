@@ -17,6 +17,7 @@ public class UserService {
         return userRepository;
     }
 
+
     public List<User> getUsersWithAgeOlderThan(int age) {
         return userRepository.stream().filter(user -> user.getAge()>age).toList();
     }
@@ -38,7 +39,10 @@ public class UserService {
     }
 
     public boolean addUser(User user) {
-        return userRepository.add(user);
+        if (userRepository.contains(user.getEmail()))
+            return false;
+        else
+            return userRepository.add(user);
     }
 
 }

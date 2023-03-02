@@ -1,6 +1,6 @@
 package demo;
 
-import java.util.List;
+import java.util.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,36 +28,36 @@ class UserServiceTest {
         serviceWithUsers.addUser(yuki);
     }
 
-    // @Test
-    // void given4Users_whenNewUserWithNotAlreadyUsedEmailIsAdded_thenUserIsAdded() {
-    //     //given
-    //     assertEquals(4, serviceWithUsers.getAllUsers().size());
+    @Test
+    void given4Users_whenNewUserWithNotAlreadyUsedEmailIsAdded_thenUserIsAdded() {
+        //given
+        assertEquals(4, serviceWithUsers.getAllUsers().size());
 
-    //     //when
-    //     boolean added = serviceWithUsers.addUser(stijn);
+        //when
+        boolean added = serviceWithUsers.addUser(stijn);
 
-    //     //then
-    //     assertTrue(added);
-    //     assertEquals(5, serviceWithUsers.getAllUsers().size());
-    //     assertTrue(serviceWithUsers.getAllUsers().contains(stijn));
-    //     assertTrue(serviceWithUsers.getAllUsers().contains(elke));
-    // }
+        //then
+        assertTrue(added);
+        assertEquals(5, serviceWithUsers.getAllUsers().size());
+        assertTrue(serviceWithUsers.getAllUsers().contains(stijn));
+        assertTrue(serviceWithUsers.getAllUsers().contains(elke));
+    }
 
-    // @Test
-    // void given4Users_whenNewUserWithAlreadyUsedEmailIsAdded_thenUserIsNotAdded() {
-    //     //given
-    //     assertEquals(4, serviceWithUsers.getAllUsers().size());
+    @Test
+    void given4Users_whenNewUserWithAlreadyUsedEmailIsAdded_thenUserIsNotAdded() {
+        //given
+        assertEquals(4, serviceWithUsers.getAllUsers().size());
 
-    //     //when
-    //     User otherElke = new User("Elke", 20, "elke@ucll.be", "elkeelke");
-    //     boolean added = serviceWithUsers.addUser(otherElke);
+        //when
+        User otherElke = new User("Elke", 20, "elke@ucll.be", "elkeelke");
+        boolean added = serviceWithUsers.addUser(otherElke);
 
-    //     //then
-    //     assertFalse(added);
-    //     assertEquals(4, serviceWithUsers.getAllUsers().size());
-    //     assertFalse(serviceWithUsers.getAllUsers().contains(otherElke));
-    //     assertTrue(serviceWithUsers.getAllUsers().contains(elke));
-    // }
+        //then
+        assertFalse(added);
+        assertEquals(4, serviceWithUsers.getAllUsers().size());
+        assertFalse(serviceWithUsers.getAllUsers().contains(otherElke));
+        assertTrue(serviceWithUsers.getAllUsers().contains(elke));
+    }
 
     // @Test
     // void given4UsersWhere2UsersWithAge44_whenSearchForUsersOlderThan43_then2UsersAreReturned() {
