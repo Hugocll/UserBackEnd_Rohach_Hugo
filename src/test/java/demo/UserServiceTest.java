@@ -71,79 +71,79 @@ class UserServiceTest {
     assertFalse(containsUserWithName(usersAged44, "Miyo"));
   }
 
-  // @Test
-  // void given4UsersWhere0UsersWithAge80_whenSearchForUsersOlderThan80_thenAnEmpyListIsReturned() {
-  //     //when
-  //     List<User> usersAged81 = serviceWithUsers.getUsersWithAgeOlderThan(80);
+  @Test
+  void given4UsersWhere0UsersWithAge80_whenSearchForUsersOlderThan80_thenAnEmpyListIsReturned() {
+      //when
+      List<User> usersAged81 = serviceWithUsers.getUsersWithAgeOlderThan(80);
 
-  //     //then
-  //     assertEquals(0, usersAged81.size());
-  // }
+      //then
+      assertEquals(0, usersAged81.size());
+  }
 
-  // @Test
-  // void given4Users_whenSearchForOldestUser_thenOldestUserIsReturned() {
-  //     //when
-  //     User oldestUser = serviceWithUsers.getOldestUser();
+  @Test
+  void given4Users_whenSearchForOldestUser_thenOldestUserIsReturned() {
+      //when
+      User oldestUser = serviceWithUsers.getOldestUser();
 
-  //     //then
-  //     assertEquals(65, oldestUser.getAge());
-  //     assertEquals("Eric", oldestUser.getName());
-  // }
+      //then
+      assertEquals(65, oldestUser.getAge());
+      assertEquals("Eric", oldestUser.getName());
+  }
 
-  // @Test
-  // void givenNoUsers_whenSearchForOldestUser_thenNullValueIsReturned() {
-  //     //when
-  //     User oldestUser = serviceWithoutUsers.getOldestUser();
+  @Test
+  void givenNoUsers_whenSearchForOldestUser_thenNullValueIsReturned() {
+      //when
+      User oldestUser = serviceWithoutUsers.getOldestUser();
 
-  //     //then
-  //     assertNull(oldestUser);
-  // }
+      //then
+      assertNull(oldestUser);
+  }
 
-  // @Test
-  // void given4Users_whenSearchForUserWithExistingEmail_thenUserIsReturned() {
-  //     //when
-  //     User foundUser = serviceWithUsers.getUserWithEmail("miyo@ucll.be");
+  @Test
+  void given4Users_whenSearchForUserWithExistingEmail_thenUserIsReturned() {
+      //when
+      User foundUser = serviceWithUsers.getUserWithEmail("miyo@ucll.be");
 
-  //     //then
-  //     assertEquals(15, foundUser.getAge());
-  //     assertEquals("Miyo", foundUser.getName());
-  // }
+      //then
+      assertEquals(15, foundUser.getAge());
+      assertEquals("Miyo", foundUser.getName());
+  }
 
-  // @Test
-  // void given4Users_whenSearchForUserWithNonExistingEmail_thenNullIsReturned() {
-  //     //when
-  //     User foundUser = serviceWithUsers.getUserWithEmail("carmen@gmail.be");
+  @Test
+  void given4Users_whenSearchForUserWithNonExistingEmail_thenNullIsReturned() {
+      //when
+      User foundUser = serviceWithUsers.getUserWithEmail("carmen@gmail.be");
 
-  //     //then
-  //     assertNull(foundUser);
-  // }
+      //then
+      assertNull(foundUser);
+  }
 
-  // @Test
-  // void given4Users_whenRemoveExistingUser_thenUserIsRemovedAndRemovedUserIsReturned() {
-  //     //given
-  //     assertEquals(4, serviceWithUsers.getAllUsers().size());
+  @Test
+  void given4Users_whenRemoveExistingUser_thenUserIsRemovedAndRemovedUserIsReturned() {
+      //given
+      assertEquals(4, serviceWithUsers.getAllUsers().size());
 
-  //     //when
-  //     User removedUser = serviceWithUsers.removeUser("yuki@ucll.be");
+      //when
+      User removedUser = serviceWithUsers.removeUser("yuki@ucll.be");
 
-  //     //then
-  //     assertEquals(3, serviceWithUsers.getAllUsers().size());
-  //     assertEquals(13, removedUser.getAge());
-  //     assertEquals("Yuki", removedUser.getName());
-  // }
+      //then
+      assertEquals(3, serviceWithUsers.getAllUsers().size());
+      assertEquals(13, removedUser.getAge());
+      assertEquals("Yuki", removedUser.getName());
+  }
 
-  // @Test
-  // void given4Users_whenRemoveNonExistingUser_thenUserIsNotRemovedAndNullValueIsReturned() {
-  //     //given
-  //     assertEquals(4, serviceWithUsers.getAllUsers().size());
+  @Test
+  void given4Users_whenRemoveNonExistingUser_thenUserIsNotRemovedAndNullValueIsReturned() {
+      //given
+      assertEquals(4, serviceWithUsers.getAllUsers().size());
 
-  //     //when
-  //     User removedUser = serviceWithUsers.removeUser("stijn@ucll.be");
+      //when
+      User removedUser = serviceWithUsers.removeUser("stijn@ucll.be");
 
-  //     //then
-  //     assertEquals(4, serviceWithUsers.getAllUsers().size());
-  //     assertNull(removedUser);
-  // }
+      //then
+      assertEquals(4, serviceWithUsers.getAllUsers().size());
+      assertNull(removedUser);
+  }
 
   private boolean containsUserWithName(List<User> users, String name) {
     return users.stream().anyMatch(user -> user.getName().equals(name));

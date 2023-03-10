@@ -45,13 +45,44 @@ public class UserService {
             if (loopUser.getEmail() == user.getEmail())
                 alreadyExists = true;
 
-        if (alreadyExists == false){ userRepository.add(user);
+        if (alreadyExists == false){ 
+            userRepository.add(user);
             return true;}
            
         else
             return false;
 
             
+    }
+
+    public User getUserWithEmail(String email){
+        for(User iUser : userRepository){
+            if (iUser.getEmail() == email)
+            return iUser;
+        }
+        return null;
+    }
+
+    public User removeUser(String email){
+        for(User iUser : userRepository){
+            if (iUser.getEmail() == email){
+                userRepository.remove(iUser);
+                return iUser;
+            }   
+        }
+        return null;
+    }
+
+    public List<User> getListOfMembersIn(int year){
+        List<User> usersWithMembershipIn = new ArrayList<>();
+        for(User iUser : userRepository){
+            for (Integer iYear : iUser.getMembershipList()){
+                if (year == iYear){
+                    usersWithMembershipIn.add(iUser);
+                }
+            }
+        }
+        return usersWithMembershipIn;
     }
 
 }

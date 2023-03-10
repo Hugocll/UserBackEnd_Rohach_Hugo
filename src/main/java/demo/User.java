@@ -53,15 +53,19 @@ public class User {
     }
 
     public String getName () {
-        return name;
+        return this.name;
     }
 
     public String getEmail () {
-        return email;
+        return this.email;
     }
 
     public String getPassword () {
-        return password;
+        return this.password;
+    }
+
+    public List<Integer> getMembershipList(){
+        return this.membershipYears;
     }
 
     public int getFirstMembershipYear() {
