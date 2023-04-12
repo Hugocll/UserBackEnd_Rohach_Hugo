@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = "http://127.0.0.1:3000")
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/users")
 public class UserRestController {
@@ -36,6 +36,26 @@ public class UserRestController {
     @GetMapping("/search/{name}")
     public User searchUserWithName(@PathVariable("name") String name) {
         return userService.getUserWithName(name);
+    }
+
+    @GetMapping("/adults")
+    public List<User> searchAdultUsers() {
+        return userService.getUsersWithAgeOlderThan(17);
+    }
+
+    @GetMapping("/search/email/{email}")
+    public User searchWithEmail(@PathVariable("email") String email) {
+        return userService.getUserWithEmail(email);
+    }
+
+    @GetMapping("/search")
+    public List<User> searchUsersWithEmailAndAge(@RequestParam("email") String email, @RequestParam("age") int age) {
+        return userService.getUserWithEmailAndAge(email, age);
+    }
+
+    @GetMapping("/search/age/{min}/{max}")
+    public List<User> searchUsersWithAgeBetween(@PathVariable("min") int min, @PathVariable("max") int max) {
+        return userService.getUsersWithAgeBetween(min, max);
     }
 
 }
