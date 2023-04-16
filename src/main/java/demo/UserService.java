@@ -16,12 +16,14 @@ public class UserService {
         User eric = new User("Eric", 65, "eric@kuleuven.be", "eric");
         User yuki = new User("Yuki", 13, "yuki@ucll.be", "yuki");
         User stijn = new User("Stijn", 45, "stijn@ucll.be", "stijn");
+        elke.addMembershipYear(2002);
 
         userRepository.add(elke);
         userRepository.add(miyo);
         userRepository.add(eric);
         userRepository.add(yuki);
         userRepository.add(stijn);
+
     }
 
     public List<User> getAllUsers() {
@@ -83,6 +85,7 @@ public class UserService {
         return null;
     }
 
+    // This
     public List<User> getListOfMembersIn(int year) {
         List<User> usersWithMembershipIn = new ArrayList<>();
         for (User iUser : userRepository) {

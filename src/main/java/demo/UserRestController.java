@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = { "http://127.0.0.1:8080", "http://localhost:8080", "http://127.0.0.1:5500",
+        "http://localhost:5500" })
 @RestController
 @RequestMapping("/users")
 public class UserRestController {
@@ -58,4 +59,8 @@ public class UserRestController {
         return userService.getUsersWithAgeBetween(min, max);
     }
 
+    @GetMapping("/search/membersinyear")
+    public List<User> searchUsersWithMembershipIn(@RequestParam("year") int year) {
+        return userService.getListOfMembersIn(year);
+    }
 }
