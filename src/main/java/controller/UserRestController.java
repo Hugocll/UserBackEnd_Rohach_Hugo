@@ -1,14 +1,22 @@
-package demo;
+package controller;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import model.User;
+import service.ServiceException;
+import service.UserService;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @CrossOrigin(origins = { "http://127.0.0.1:8080", "http://localhost:8080", "http://127.0.0.1:5500",
         "http://localhost:5500" })
@@ -25,12 +33,12 @@ public class UserRestController {
     }
 
     @GetMapping("/oldest")
-    public User getOldestUser() {
+    public User getOldestUser() throws ServiceException {
         return userService.getOldestUser();
     }
 
     @GetMapping("/search/olderthan")
-    public List<User> searchUsersWithAgeOlderThan(@RequestParam("age") int age) {
+    public List<User> searchUsersWithAgeOlderThan(@RequestParam("age") int age) throws ServiceException {
         return userService.getUsersWithAgeOlderThan(age);
     }
 
@@ -40,12 +48,12 @@ public class UserRestController {
     }
 
     @GetMapping("/adults")
-    public List<User> searchAdultUsers() {
+    public List<User> searchAdultUsers() throws ServiceException {
         return userService.getUsersWithAgeOlderThan(17);
     }
 
     @GetMapping("/search/email/{email}")
-    public User searchWithEmail(@PathVariable("email") String email) {
+    public User searchWithEmail(@PathVariable("email") String email) throws ServiceException {
         return userService.getUserWithEmail(email);
     }
 
@@ -62,5 +70,15 @@ public class UserRestController {
     @GetMapping("/search/membersinyear")
     public List<User> searchUsersWithMembershipIn(@RequestParam("year") int year) {
         return userService.getListOfMembersIn(year);
+    }
+
+    @PostMapping
+    public User addUser(@RequestBody User user) throws ServiceException {
+        return userService.addUser(user);
+    }
+
+    @DeleteMapping("/{email}")
+    public User deleteUser(@PathVariable("email") String email) throws ServiceException {
+        return userService.removeUser(email);
     }
 }

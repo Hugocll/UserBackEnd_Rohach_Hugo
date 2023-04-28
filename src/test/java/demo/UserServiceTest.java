@@ -1,68 +1,117 @@
 package demo;
 
 import java.util.List;
-
-import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import model.User;
+import repo.UserRepository;
+import service.ServiceException;
+import service.UserService;
+
+import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Assertions;
 
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-    // given
-    UserService serviceWithUsers = new UserService();
+    @Mock
+    UserRepository userRepository;
 
-    User elke = new User("Elke", 44, "elke@ucll.be", "elke");
-    User miyo = new User("Miyo", 15, "miyo@ucll.be", "miyo");
-    User eric = new User("Eric", 65, "eric@kuleuven.be", "eric");
-    User yuki = new User("Yuki", 13, "yuki@ucll.be", "yuki");
-    User stijn = new User("Stijn", 45, "stijn@ucll.be", "stijn");
+    @InjectMocks
+    UserService userService;
 
-    UserService serviceWithoutUsers = new UserService();
+    private User elke;
+    private User eric;
+    private User yuki;
+    private User miyo;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         // given
-        serviceWithUsers.addUser(elke);
-        serviceWithUsers.addUser(miyo);
-        serviceWithUsers.addUser(eric);
-        serviceWithUsers.addUser(yuki);
+        elke = new User("Elke", 45, "elke@ucll.be", "t");
+        eric = new User("Eric", 65, "eric@ucll.be", "t");
+        yuki = new User("Yuki", 13, "yuki@ucll.be", "t");
+        miyo = new User("Miyo", 15, "miyo@ucll.be", "t");
     }
 
     @Test
-    void given4Users_whenNewUserWithNotAlreadyUsedEmailIsAdded_thenUserIsAdded() {
+    public void givenNoUsers_whenValidUserAdded_ThenUserIsAddedAndUserIsReturned() throws ServiceException{
         // given
-        assertEquals(4, serviceWithUsers.getAllUsers().size());
+        when(userRepository.save(elke)).thenReturn(elke);
 
         // when
-        boolean added = serviceWithUsers.addUser(stijn);
+        User added = userService.addUser(elke);
 
         // then
-        assertTrue(added);
-        assertEquals(5, serviceWithUsers.getAllUsers().size());
-        assertTrue(serviceWithUsers.getAllUsers().contains(stijn));
-        assertTrue(serviceWithUsers.getAllUsers().contains(elke));
+        assertEquals(elke.getName(), added.getName());
+        assertEquals(elke.getAge(), added.getAge());
+        assertEquals(elke.getPassword(), added.getPassword());
+        assertEquals(elke.getEmail(), added.getEmail());
     }
 
     @Test
-    void given4Users_whenNewUserWithAlreadyUsedEmailIsAdded_thenUserIsNotAdded() {
+    void given4Users_whenNewUserWithAlreadyUsedEmailIsAdded_thenUserIsNotAddedAndServiceExceptionIsThrown() {
         // given
-        assertEquals(4, serviceWithUsers.getAllUsers().size());
-
-        // when
         User otherElke = new User("Elke", 20, "elke@ucll.be", "elkeelke");
-        boolean added = serviceWithUsers.addUser(otherElke);
+        when(userRepository.findUserByEmail("elke@ucll.be")).thenReturn(elke);
+
+        // when
+        ServiceException ex = Assertions.assertThrows(ServiceException.class, () -> userService.addUser(otherElke));
 
         // then
-        assertFalse(added);
-        assertEquals(4, serviceWithUsers.getAllUsers().size());
-        assertFalse(serviceWithUsers.getAllUsers().contains(otherElke));
-        assertTrue(serviceWithUsers.getAllUsers().contains(elke));
+        assertEquals("email", ex.getField());
+        assertEquals("email already taken", ex.getMessage());
     }
 
     @Test
-    void given4UsersWhere2UsersWithAge44_whenSearchForUsersOlderThan43_then2UsersAreReturned() {
+    public void givenUsersWhith1UserOlderThan20_whenGetUsersOlderThan20_thenListWith1UserOlderThan20IsReturned()
+            throws ServiceException {
+        // given
+        List<User> usersAbove20 = new ArrayList<User>();
+        usersAbove20.add(elke);
+        when(userRepository.findUsersByAgeAfter(20)).thenReturn(usersAbove20);
+
         // when
-        List<User> usersAged44 = serviceWithUsers.getUsersWithAgeOlderThan(43);
+        List<User> result = userService.getUsersWithAgeOlderThan(20);
+
+        // then
+        assertEquals(usersAbove20.size(), result.size());
+        assertTrue(result.contains(elke));
+        assertFalse(result.contains(miyo));
+    }
+
+    @Test
+    public void givenUsersWhithNoUsersOlderThan20_whenGetUsersOlderThan20_thenServiceExceptionIsThrown() {
+        // given
+        List<User> usersAbove20 = new ArrayList<User>();
+        when(userRepository.findUsersByAgeAfter(20)).thenReturn(usersAbove20);
+
+        // when
+        ServiceException ex = Assertions.assertThrows(ServiceException.class,
+                () -> userService.getUsersWithAgeOlderThan(20));
+
+        // then
+        assertEquals("users", ex.getField());
+        assertEquals("no users with age 20 found", ex.getMessage());
+    }
+
+    @Test
+    void given4UsersWhere2UsersWithAge44_whenSearchForUsersOlderThan43_then2UsersAreReturned() throws ServiceException {
+        // given
+        List<User> usersAbove43 = new ArrayList<>();
+        usersAbove43.add(elke);
+        usersAbove43.add(eric);
+        when(userRepository.findUsersByAgeAfter(43)).thenReturn(usersAbove43);
+
+        // when
+        List<User> usersAged44 = userService.getUsersWithAgeOlderThan(43);
 
         // then
         assertEquals(2, usersAged44.size());
@@ -72,18 +121,32 @@ class UserServiceTest {
     }
 
     @Test
-    void given4UsersWhere0UsersWithAge80_whenSearchForUsersOlderThan80_thenAnEmpyListIsReturned() {
+    void given4UsersWhere0UsersWithAge80_whenSearchForUsersOlderThan80_thenServiceExceptionIsThrown() {
+        // given
+        List<User> usersAbove80 = new ArrayList<>();
+        when(userRepository.findUsersByAgeAfter(80)).thenReturn(usersAbove80);
+
         // when
-        List<User> usersAged81 = serviceWithUsers.getUsersWithAgeOlderThan(80);
+        ServiceException ex = Assertions.assertThrows(ServiceException.class,
+                () -> userService.getUsersWithAgeOlderThan(80));
 
         // then
-        assertEquals(0, usersAged81.size());
+        assertEquals("users", ex.getField());
+        assertEquals("no users with age 80 found", ex.getMessage());
     }
 
     @Test
-    void given4Users_whenSearchForOldestUser_thenOldestUserIsReturned() {
+    void given4Users_whenSearchForOldestUser_thenOldestUserIsReturned() throws ServiceException {
+        // given
+        List<User> orderedByAge = new ArrayList<User>();
+        orderedByAge.add(eric);
+        orderedByAge.add(elke);
+        orderedByAge.add(miyo);
+        orderedByAge.add(yuki);
+        when(userRepository.findAllByOrderByAgeDesc()).thenReturn(orderedByAge);
+
         // when
-        User oldestUser = serviceWithUsers.getOldestUser();
+        User oldestUser = userService.getOldestUser();
 
         // then
         assertEquals(65, oldestUser.getAge());
@@ -91,58 +154,65 @@ class UserServiceTest {
     }
 
     @Test
-    void givenNoUsers_whenSearchForOldestUser_thenNullValueIsReturned() {
-        // when
-        User oldestUser = serviceWithoutUsers.getOldestUser();
-
+    void givenNoUsers_whenSearchForOldestUser_thenServiceExceptionIsThrown() {
+        //given
+        when(userRepository.findAllByOrderByAgeDesc()).thenReturn(null);
+        
+        //when
+        ServiceException ex = Assertions.assertThrows(ServiceException.class, ()-> userService.getOldestUser());
+        
         // then
-        assertNull(oldestUser);
+        assertEquals("users", ex.getField());  
+        assertEquals("no oldest user found", ex.getMessage());
     }
 
     @Test
-    void given4Users_whenSearchForUserWithExistingEmail_thenUserIsReturned() {
-        // when
-        User foundUser = serviceWithUsers.getUserWithEmail("miyo@ucll.be");
+    void given4Users_whenSearchForUserWithExistingEmail_thenUserIsReturned() throws ServiceException {
+        //given
+        when(userRepository.findUserByEmail("miyo@ucll.be")).thenReturn(miyo);
 
-        // then
+        //when
+        User foundUser = userService.getUserWithEmail("miyo@ucll.be");
+
+        //then
         assertEquals(15, foundUser.getAge());
         assertEquals("Miyo", foundUser.getName());
     }
 
     @Test
-    void given4Users_whenSearchForUserWithNonExistingEmail_thenNullIsReturned() {
-        // when
-        User foundUser = serviceWithUsers.getUserWithEmail("carmen@gmail.be");
+    void given4Users_whenSearchForUserWithNonExistingEmail_thenServiceExceptionIsThrown() {
+        //given
+        when(userRepository.findUserByEmail("carmen@gmail.be")).thenReturn(null);
 
+        //when
+        ServiceException ex = Assertions.assertThrows(ServiceException.class, ()->userService.getUserWithEmail("carmen@gmail.be"));
+        
         // then
-        assertNull(foundUser);
+        assertEquals("user", ex.getField());  
+        assertEquals("no user found with email: carmen@gmail.be", ex.getMessage());
     }
 
     @Test
-    void given4Users_whenRemoveExistingUser_thenUserIsRemovedAndRemovedUserIsReturned() {
-        // given
-        assertEquals(4, serviceWithUsers.getAllUsers().size());
+    void given4Users_whenRemoveExistingUser_thenUserIsRemovedAndRemovedUserIsReturned() throws ServiceException {
+        //given
+        when(userRepository.findUserByEmail("yuki@ucll.be")).thenReturn(yuki);
 
-        // when
-        User removedUser = serviceWithUsers.removeUser("yuki@ucll.be");
+        //when
+        User removedUser = userService.removeUser("yuki@ucll.be");
 
-        // then
-        assertEquals(3, serviceWithUsers.getAllUsers().size());
-        assertEquals(13, removedUser.getAge());
-        assertEquals("Yuki", removedUser.getName());
+        //then
+        assertEquals(yuki.getName(), removedUser.getName());
     }
 
     @Test
-    void given4Users_whenRemoveNonExistingUser_thenUserIsNotRemovedAndNullValueIsReturned() {
-        // given
-        assertEquals(4, serviceWithUsers.getAllUsers().size());
-
+    void given4Users_whenRemoveNonExistingUser_thenUserIsNotRemovedAndServiceExceptionIsThrown() {
         // when
-        User removedUser = serviceWithUsers.removeUser("stijn@ucll.be");
+        ServiceException ex = Assertions.assertThrows(ServiceException.class,
+                () -> userService.removeUser("stijn@ucll.be"));
 
         // then
-        assertEquals(4, serviceWithUsers.getAllUsers().size());
-        assertNull(removedUser);
+        assertEquals("user", ex.getField());
+        assertEquals("user with this email does not exist", ex.getMessage());
     }
 
     private boolean containsUserWithName(List<User> users, String name) {
