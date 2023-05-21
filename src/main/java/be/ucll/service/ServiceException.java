@@ -1,4 +1,4 @@
-package service;
+package be.ucll.service;
 
 public class ServiceException extends Exception {
 

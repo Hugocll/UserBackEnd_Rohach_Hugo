@@ -1,4 +1,4 @@
-package model;
+package be.ucll.model;
 
 import java.time.Year;
 import java.util.*;

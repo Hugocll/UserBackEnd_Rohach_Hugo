@@ -1,4 +1,4 @@
-package controller;
+package be.ucll.controller;
 
 import java.util.List;
 
@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import model.User;
-import service.ServiceException;
-import service.UserService;
-
+import be.ucll.model.User;
+import be.ucll.service.ServiceException;
+import be.ucll.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 

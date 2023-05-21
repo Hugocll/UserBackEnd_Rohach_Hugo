@@ -1,4 +1,4 @@
-package demo;
+package be.ucll.demo;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,11 +13,11 @@ import org.junit.jupiter.api.BeforeAll;
 
 import org.junit.jupiter.api.Test;
 
+import be.ucll.model.User;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import model.User;
 
 class UserTest {
 

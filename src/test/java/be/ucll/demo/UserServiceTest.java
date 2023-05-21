@@ -1,4 +1,4 @@
-package demo;
+package be.ucll.demo;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -10,10 +10,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import model.User;
-import repo.UserRepository;
-import service.ServiceException;
-import service.UserService;
+import be.ucll.model.User;
+import be.ucll.repo.UserRepository;
+import be.ucll.service.ServiceException;
+import be.ucll.service.UserService;
 
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
