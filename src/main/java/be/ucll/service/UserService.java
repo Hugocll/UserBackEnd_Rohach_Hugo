@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 
 import be.ucll.model.User;
 import be.ucll.repo.UserRepository;
+import jakarta.transaction.Transactional;
 
 @Service
+@Transactional
+
 public class UserService {
 
     @Autowired
@@ -35,11 +38,11 @@ public class UserService {
     }
 
     public User getUserWithName(String name) {
-        return userRepository.findUserByEmail(name);
+        return userRepository.findUserByName(name);
     }
 
     public User addUser(User user) throws ServiceException {
-        if (getUserWithEmail(user.getEmail()) != null) {
+        if (userRepository.findUserByEmail(user.getEmail()) != null) {
             throw new ServiceException("email", "email already taken");
         }
         userRepository.save(user);
@@ -50,7 +53,7 @@ public class UserService {
     public User getUserWithEmail(String email) throws ServiceException {
         User user = userRepository.findUserByEmail(email);
         if (user == null) {
-            throw new ServiceException("user", "no user found with email: carmen@gmail.be");
+            throw new ServiceException("user", String.format("No user found with email: %s", email));
         }
         return user;
 
